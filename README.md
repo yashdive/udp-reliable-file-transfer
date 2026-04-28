@@ -270,6 +270,22 @@ For the Selective Repeat Tasks 1, 2, and 3, use the same sweeps as the Go-Back-N
 - Task 2: vary `MSS` with `N=64` and `p=0.05`
 - Task 3: vary `p` with `N=64` and `MSS=500`
 
+### Selective Repeat Task Runner
+
+If you want CSV results and plots generated automatically, use:
+
+```powershell
+python selective_repeat_task_runner.py --server-host 10.153.27.102 --server-port 7735 --input-file demo_input.bin --task all --trials 5 --timeout 0.5 --client-run-timeout 1200 --max-retries 2 --verbose
+```
+
+This writes SR CSV files to `results_sr/`, trial logs to `trial_logs_sr/`, and PNG plots to `results_sr/` by default.
+
+If you want to skip plots:
+
+```powershell
+python selective_repeat_task_runner.py --server-host 10.153.27.102 --server-port 7735 --input-file demo_input.bin --task all --trials 5 --timeout 0.5 --client-run-timeout 1200 --max-retries 2 --verbose --no-plot
+```
+
 ## Notes
 
 - All key parameters are runtime-tunable, so there is no hardcoded `N`, `MSS`, or `p` in the protocol implementation.
