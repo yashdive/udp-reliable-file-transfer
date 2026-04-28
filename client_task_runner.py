@@ -30,6 +30,15 @@ def normalize_server_target(server_host: str, server_port: int) -> Tuple[str, in
     return server_host, server_port
 
 
+def ensure_text(value: object) -> str:
+    """Return a text string for subprocess output regardless of type."""
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return str(value)
+
+
 def run_client_once(
     python_cmd: str,
     server_host: str,
@@ -71,13 +80,13 @@ def run_client_once(
         )
     except subprocess.TimeoutExpired as exc:
         elapsed = time.perf_counter() - start
-        stdout_text = exc.stdout or ""
-        stderr_text = exc.stderr or ""
+        stdout_text = ensure_text(exc.stdout)
+        stderr_text = ensure_text(exc.stderr)
         return False, elapsed, "timed_out", stdout_text, stderr_text
 
     elapsed = time.perf_counter() - start
     if completed.returncode != 0:
-        return False, elapsed, f"process_error_{completed.returncode}", completed.stdout, completed.stderr
+        return False, elapsed, f"process_error_{completed.returncode}", ensure_text(completed.stdout), ensure_text(completed.stderr)
 
     for line in completed.stdout.splitlines():
         if line.startswith("Transfer complete. Delay ="):
