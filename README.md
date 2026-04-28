@@ -11,6 +11,11 @@ This project implements reliable file transfer over UDP using Go-Back-N ARQ.
 - `plot_results.py`: generates PNG plots from the CSV files
 - `compare_files.py`: byte-level transfer validation tool
 
+## Extra Credit Source Files
+
+- `selective_repeat_server.py`: Selective Repeat receiver/server
+- `selective_repeat_client.py`: Selective Repeat sender/client
+
 ## Optional or Generated Files
 
 These are not part of the core source code and can be deleted if you want a clean repo:
@@ -242,6 +247,28 @@ python compare_files.py demo_input.bin demo_output.bin
 ```
 
 Prints `MATCH` if transfer is correct.
+
+## Selective Repeat ARQ (Extra Credit)
+
+These files are separate from the Go-Back-N implementation, so the normal project code is unchanged.
+
+Server:
+
+```powershell
+python selective_repeat_server.py 7735 demo_output.bin 0.05 64 --verbose
+```
+
+Client:
+
+```powershell
+python selective_repeat_client.py 10.153.27.102 7735 demo_input.bin 64 500 --verbose
+```
+
+For the Selective Repeat Tasks 1, 2, and 3, use the same sweeps as the Go-Back-N tasks, but run them with the Selective Repeat client and server files above:
+
+- Task 1: vary `N` with `MSS=500` and `p=0.05`
+- Task 2: vary `MSS` with `N=64` and `p=0.05`
+- Task 3: vary `p` with `N=64` and `MSS=500`
 
 ## Notes
 
